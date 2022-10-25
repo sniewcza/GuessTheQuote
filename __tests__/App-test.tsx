@@ -1,14 +1,12 @@
-/**
- * @format
- */
-
-import 'react-native';
-import React from 'react';
+import {render, screen} from '@testing-library/react-native';
 import App from '../App';
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
-
-it('renders correctly', () => {
-  renderer.create(<App />);
+describe('app splash screen test', () => {
+  it('should show splash screen with header', () => {
+    render(<App />);
+    const mainScreen = screen.getByTestId('main-screen');
+    const header = screen.getByTestId('main-headerr');
+    expect(mainScreen).not.toBeNull();
+    expect(header).not.toBeNull();
+  });
 });
