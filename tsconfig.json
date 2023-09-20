@@ -10,6 +10,7 @@
     "paths": {
       "@model/*": ["/app/model/*"],
       "@ui/*": ["/app/ui/*"],
+      "@api/*":["/app/api/*"]
      
   },
   }

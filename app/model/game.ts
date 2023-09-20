@@ -1,5 +1,5 @@
 import {Question} from './question';
-import {Quote} from './Quote';
+import {Quote} from './quote';
 
 type ArrayShufler<T> = (arr: Array<T>) => Array<T>;
 
@@ -10,8 +10,9 @@ export class Game {
   constructor(private quotes: Quote[], private shuffler: ArrayShufler<Quote>) {
     if (quotes.length != 4)
       throw Error('[Game] quotes length different than 4');
+    const {content, author} = quotes[0];
     const shuffledArray = this.shuffler(this.quotes);
-    const {content, author} = shuffledArray[0];
+
     this.correctAnswer = author;
     this.question = {
       content: content,
