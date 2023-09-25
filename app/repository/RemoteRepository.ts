@@ -7,8 +7,8 @@ export class Repository {
       const quotes = await getQuotesList(page);
       return quotes?.map<Quote>(q => ({author: q.author, content: q.content}));
     } catch (error) {
-      console.log(error);
-      return undefined;
+      console.log('repository', error);
+      return Promise.reject(error);
     }
   }
 }

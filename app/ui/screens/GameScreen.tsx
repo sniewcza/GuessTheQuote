@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React from 'react';
 import {
   Pressable,
   SafeAreaView,
@@ -14,8 +14,14 @@ import {useGame} from './useGame';
 const GameScreen = ({}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const {question, selectedAnswer, isCorrect, onSelectedAnswerChange, reset} =
-    useGame();
+  const {
+    question,
+    selectedAnswer,
+    isCorrect,
+    onSelectedAnswerChange,
+    reset,
+    isError,
+  } = useGame();
 
   const onAnswerPress = (answer: string) => {
     onSelectedAnswerChange(answer);
@@ -34,32 +40,37 @@ const GameScreen = ({}) => {
   return (
     <SafeAreaView testID="main-screen" style={styles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        style={styles.questionContainer}
-        centerContent={true}
-        contentContainerStyle={{marginHorizontal: 5}}>
-        <Pressable onPress={reset} style={{height: 500}}>
-          <Text testID="main-header" style={styles.header}>
-            {question?.content}
-          </Text>
-        </Pressable>
-      </ScrollView>
-
-      <View style={styles.answerContainer}>
-        {question?.answers.map(a => (
-          <Pressable
-            key={a}
-            onPress={() => onAnswerPress(a)}
-            style={[
-              styles.answerButton,
-              {backgroundColor: getColorForAnswer(a)},
-            ]}>
-            <Text adjustsFontSizeToFit style={styles.answer}>
-              {a}
-            </Text>
-          </Pressable>
-        ))}
-      </View>
+      {isError === true ? (
+        <Text testID="error-text">Error</Text>
+      ) : (
+        <View testID="game-section" style={{flex: 1}}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.questionContainer}
+            contentContainerStyle={{marginHorizontal: 5}}>
+            <Pressable onPress={reset}>
+              <Text testID="main-header" style={styles.header}>
+                {question?.content}
+              </Text>
+            </Pressable>
+          </ScrollView>
+          <View style={styles.answerContainer}>
+            {question?.answers.map(a => (
+              <Pressable
+                key={a}
+                onPress={() => onAnswerPress(a)}
+                style={[
+                  styles.answerButton,
+                  {backgroundColor: getColorForAnswer(a)},
+                ]}>
+                <Text adjustsFontSizeToFit style={styles.answer}>
+                  {a}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -76,7 +87,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.6,
   },
   header: {
-    marginTop: '45%',
+    marginTop: '35%',
+    marginBottom: '45%',
     fontSize: 32,
     fontWeight: '900',
     textAlign: 'center',
